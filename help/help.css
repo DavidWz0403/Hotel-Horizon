@@ -1,0 +1,16 @@
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+}
+
+.btn-link {
+    color: #333;
+    text-decoration: none;
+}
+
+.btn-link:hover, .btn-link:focus {
+    text-decoration: underline;
+}
