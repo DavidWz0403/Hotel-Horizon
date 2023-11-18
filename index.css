@@ -1,3 +1,18 @@
+
+
+:root {
+    --button-color: #ff6100;
+    --primary-color: #c1c2c5;
+    --secondary-color: #4d555f;
+ }
+
+ body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--primary-color);
+}
+
+/***** Index *****/
+
 .hero-section {
     display: flex;
     justify-content: center;
@@ -10,4 +25,100 @@
     background-repeat: no-repeat;
 }
 
+/***** Navbar *****/
 
+.logo {
+    max-width: 100px; 
+}
+
+
+.btn-outline-warning {
+    color: var(--button-color);
+    border-color: var(--button-color);
+    margin: 5px;
+}
+
+.navbar{
+    justify-content: space-between;
+}
+
+
+@media (max-width: 768px) {
+    .navbar-nav.ml-auto {
+        flex-direction: column;
+    }
+
+    .d-flex {
+        margin-top: 10px; 
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.navbar {
+    background-color: #4d555f !important;
+}
+
+
+
+/***** Help ******/
+
+.card-help {
+    background-color: var(--secondary-color);
+}
+
+.btn-help{
+    color: #333;
+    text-decoration: none;
+}
+
+.btn-help:hover, .btn-link:focus {
+    text-decoration: underline;
+}
+
+
+
+/***** Impressum *****/
+
+.impressum-container {
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.impressum-h1 {
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.impressum-h2 {
+    color: #333;
+    margin-top: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+
+.img-fluid.rounded-circle {
+    max-width: 150px;
+    margin: 0 auto;
+}
+
+.team-member {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.team-member img {
+    border-radius: 50%;  
+    width: 150px;        
+    height: 150px;    
+    object-fit: cover;   
+}
+
+.team-name {
+    margin-top: 10px;   
+    font-weight: bold; 
+}

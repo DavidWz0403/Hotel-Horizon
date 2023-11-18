@@ -10,7 +10,7 @@
 </head>
 <body>
 <?php
-       include './header/header2.php';
+       include './header.php';
        ?>
     
   <div class="hero-section bg-image text-white d-flex align-items-center" style="background-image: url('./img/background.jpg');">
