@@ -1,10 +1,17 @@
 <?php
+function validatedata($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $username = trim(htmlspecialchars($_POST["username"]));
-    $password = trim(htmlspecialchars($_POST["password"]));
+    $username = validatedata($_POST["username"]);
+    $password = validatedata($_POST["password"]);
     if($username=="admin"&&$password=="admin"){
         $_SESSION["role"] = 1; #1 steht für Admin
     }
@@ -15,6 +22,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         echo "Der eingegeben Benutzername oder das eingegbenen Passwort ist falsch.";
     }
     $_SESSION["Benutzer"] = $username;
+    $_SESSION["Passwort"] = $password;
 }
 include("./header.php");
 ?>
