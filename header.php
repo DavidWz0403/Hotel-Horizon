@@ -1,8 +1,9 @@
 <?php
-session_start();
-if (!$_SESSION["visited"]){
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION["role"])){
     $_SESSION["role"] = 0;
-    $_SESSION["Benutzer"] = "";
 }
 ?>
 

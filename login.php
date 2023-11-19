@@ -1,9 +1,6 @@
 <?php
-session_start();
-$_SESSION["visited"] = FALSE;
-if (!$_SESSION["visited"]){
-    $_SESSION["role"] = 0;
-    $_SESSION["Benutzer"] = "";
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
 }
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $username = trim(htmlspecialchars($_POST["username"]));
