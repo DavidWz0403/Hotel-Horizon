@@ -52,6 +52,7 @@ $output = "";
             if(!isset($_SESSION["mail"])){$_SESSION["mail"]="test@test.at";}
             if(!isset($_SESSION["vorname"])){$_SESSION["vorname"]="Max";}
             if(!isset($_SESSION["nachname"])){$_SESSION["nachname"]="Mustermann";}
+        }
 
     ?>
     <div class="container my-5">
