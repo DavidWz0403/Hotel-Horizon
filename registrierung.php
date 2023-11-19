@@ -1,12 +1,21 @@
 <?php
+include("./header.php");
+
+function validatedata($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $mail = htmlspecialchars($_POST["mail"]);
-    $vorname = trim(htmlspecialchars($_POST["vorname"]));
-    $nachname = trim(htmlspecialchars($_POST["nachname"]));
-    $username = trim(htmlspecialchars($_POST["username"]));
-    $password = trim(htmlspecialchars($_POST["password"]));
-    $password2 = trim(htmlspecialchars($_POST["password2"]));
-    $anrede = trim(htmlspecialchars($_POST["anrede"]));
+    $mail = validatedata($_POST["mail"]);
+    $vorname = validatedata($_POST["vorname"]);
+    $nachname = validatedata($_POST["nachname"]);
+    $username = validatedata($_POST["username"]);
+    $password = validatedata($_POST["password"]);
+    $password2 = validatedata($_POST["password2"]);
+    $anrede = validatedata($_POST["anrede"]);
 
     if($password == $password2){
     }
@@ -23,15 +32,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrierung</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="./index.css" rel="stylesheet">
 </head>
 <body>
-
+<h1>Registrierung</h1>
+<p>Jetzt kostenfrei reservieren um ein Hotelzimmer zu buchen.</p>
 <form action="registrierung.php" method="post">
     <div class="form-group">
-        <label for="anrede">Anrede</label>
+        <label for="anrede">Geschlecht</label>
         <select class="register" id="anrede" name="anrede" required>
-            <option>Herr</option>
-            <option>Frau</option>
+            <option>männlich</option>
+            <option>weiblich</option>
             <option>divers</option>
             </select>
         </div>
@@ -61,8 +72,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <button type="reset" class="btn btn-primary">Reset</button>
-
 </form>
+
+    <div class="button">
+        <button class="btn button-header btn-outline-warning"><a href="login.php">Bereits ein Konto? Hier mit deinem Konto anmelden.</a></button>
+        </div>
 
 </body>
 </html>

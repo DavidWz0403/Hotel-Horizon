@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +37,9 @@
                         <a class="nav-link" href="#">Hotels</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="profil.php">Profil</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="help.php">Help</a>
                     </li>
                     <li class="nav-item">
@@ -43,13 +50,27 @@
                     </li>
                 </ul>
                 <div class="d-flex">
-                    <div class="button">
-                        <button class="btn button-header btn-outline-warning mr-2">Registrierung</button>
+                <?php
+                    if($_SESSION["role"]>0){
+                        ?>
+                            <div class="button">
+                        <button class="btn button-header btn-outline-warning"><a href="logout.php">Logout</a></button>
+                    </div>
+                        <?php
+                    }
+                    else {
+                        ?>
+                        <div class="button">
+                        <button class="btn button-header btn-outline-warning mr-2"><a href="registrierung.php">Registrierung</a></button>
                     </div>
 
-                    <div class="button">
-                        <button class="btn button-header btn-outline-warning">Login</button>
+                        <div class="button">
+                        <button class="btn button-header btn-outline-warning"><a href="login.php">Login</a></button>
                     </div>
+                        <?php
+                    }
+                ?>
+                    
                 </div>
     </div>
   </div>
