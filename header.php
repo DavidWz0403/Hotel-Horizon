@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!$_SESSION["visited"]){
+    $_SESSION["role"] = 0;
+    $_SESSION["Benutzer"] = "";
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +55,7 @@ session_start();
                 </ul>
                 <div class="d-flex">
                 <?php
-                    if($_SESSION["role"]>0){
+                    if($_SESSION["role"]>0 && isset($_SESSION["role"])){
                         ?>
                             <div class="button">
                         <button class="btn button-header btn-outline-warning"><a href="logout.php">Logout</a></button>

@@ -76,7 +76,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     <div class="button">
         <button class="btn button-header btn-outline-warning"><a href="login.php">Bereits ein Konto? Hier mit deinem Konto anmelden.</a></button>
-        </div>
+    </div>
 
 </body>
 </html>
