@@ -32,10 +32,11 @@
 }
 
 
-.btn-outline-warning {
-    color: var(--button-color);
-    border-color: var(--button-color);
-    margin: 5px;
+.btn-primary {
+    background-color: var(--button-color) !important;
+    border-color: var(--button-color) !important;
+    color: black !important;
+    text-decoration: none !important;
 }
 
 .navbar{
@@ -58,6 +59,8 @@
 .navbar {
     background-color: #4d555f !important;
 }
+
+
 
 
 
@@ -122,3 +125,7 @@
     margin-top: 10px;   
     font-weight: bold; 
 }
+
+
+
+/***** End Section *****/

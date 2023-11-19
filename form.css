@@ -1,0 +1,10 @@
+.card{
+    background-color: var(--secondary-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--button-color) !important;
+    border-color: var(--button-color) !important;
+    color: black !important;
+}
+
