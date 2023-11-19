@@ -71,15 +71,15 @@ $output = "";
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Email-Adresse</label>
-                                <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" required>
+                                <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" value=<?php echo $_SESSION["mail"]?> required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Vorname</label>
-                                <input type="text" class="form-control" id="vorname"  name="vorname" placeholder="Vorname" required>
+                                <input type="text" class="form-control" id="vorname"  name="vorname" placeholder="Vorname" value=<?php echo $_SESSION["vorname"]?> required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Nachname</label>
-                                <input type="text" class="form-control" id="nachname" name="nachname" placeholder="Nachname" required>
+                                <input type="text" class="form-control" id="nachname" name="nachname" placeholder="Nachname" value=<?php echo $_SESSION["nachname"]?> required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Benutzername</label>
