@@ -1,3 +1,13 @@
+<?php 
+function validatedata($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+$output = "";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +20,39 @@
 </head>
 <body>
     <?php
-        include("./header.php");
+    include("./header.php");
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $username = validatedata($_POST["username"]);
+            $mail = validatedata($_POST["mail"]);
+            $vorname = validatedata($_POST["vorname"]);
+            $nachname = validatedata($_POST["nachname"]);
+            $npw = validatedata($_POST["npw"]);
+            $password = validatedata($_POST["password"]);
+            if($password==$_SESSION["Passwort"]){
+                $_SESSION["Benutzer"] = $username;
+                $_SESSION["mail"] = $mail;
+                $_SESSION["vorname"] =$vorname;
+                $_SESSION["nachname"] = $nachname;
+                if(!$npw == ""){
+                    $_SESSION["Passwort"] = $npw;
+                    $output = "Das Passwort wurde erfolgreich geändert.";
+                }
+                $output = "Die Änderungen wurden erfolgreich durchgeführt.";
+            }
+            else{
+                $output = "Das Passwort ist nicht korrekt.";
+            }
+        }
+
+        if($_SESSION["role"]>0){
+            #Zukünftig werden hier die Daten aus der Datenbank geladen.
+            if(!isset($_SESSION["mail"])){$_SESSION["mail"]="test@test.at";}
+            if(!isset($_SESSION["vorname"])){$_SESSION["vorname"]="Max";}
+            if(!isset($_SESSION["nachname"])){$_SESSION["nachname"]="Mustermann";}
+
     ?>
     <div class="container my-5">
         <div class="row justify-content-center">

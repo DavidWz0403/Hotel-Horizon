@@ -40,7 +40,7 @@ if (!isset($_SESSION["role"])){
                         <a class="nav-link" href="">News</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Hotels</a>
+                        <a class="nav-link" href="hotels.php">Hotels</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="help.php">Help</a>
