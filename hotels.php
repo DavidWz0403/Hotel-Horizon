@@ -15,10 +15,26 @@
     $reservierungen = array (array("2023-11-20","2023-11-23",true,false,true),array("2023-11-30","2023-12-05",false,false,false)); #zukünftig hier die Reservierungen aus der DB laden.
     ?>
     <h1>Reservierungen</h1>
-    <h2>Meine bisherigen Reservierungen</h2>
+    <h2>Ihre bisherigen Reservierungen</h2>
         <?php
             for($i=0;$i<count($reservierungen);$i++){
-                echo $reservierungen[$i][0];
+                #for($j=0;$j<count($reservierungen[$i]);$j++){
+                    echo "<h3>Reservierung ".$i+1;
+                    echo "<br/>"; 
+                    echo "Anreisedatum: ".$reservierungen[$i][0];
+                    echo ", Abreisedatum: ".$reservierungen[$i][1];
+                    echo "Frühstück ";
+                    if($reservierungen[$i][3]){
+                        echo "inkludiert.";};
+                    #else{
+                    #    echo "nicht inkludiert.";};
+                    #echo "<br/> Parkplatz ";
+                    #if($reservierungen[$i][4]){echo "inkludiert"};else{"nicht inkludiert."};
+                    #echo "<br/> Haustieremitnahme ";
+                    #if($reservierungen[$i][5]){echo "gestattet"};else{"nicht gestattet."};
+                #}
+                echo "<br/>";
+                echo "<br/>";
             }
     ?>
     <h2>Neue Reservierung</h2>
