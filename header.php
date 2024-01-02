@@ -2,6 +2,7 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+echo "Rolle: " . $_SESSION["role"];
 if (!isset($_SESSION["role"])){
     $_SESSION["role"] = 0;
 }
@@ -37,21 +38,29 @@ if (!isset($_SESSION["role"])){
                         <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">News</a>
+                        <a class="nav-link" href="newsletter.php">News</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="hotels.php">Hotels</a>
                     </li>
+                    <?php if ($_SESSION["role"] === 2): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="reservierungen_user.php">Meine Reservierungen</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link" href="help.php">Help</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="impressum.php">Impressum</a>
                     </li>
-                </ul>
+        </ul>
                 <div class="d-flex">
                 
                 <?php if ($_SESSION["role"] === 1): ?>
+                    
+                    <a href="user_admin_übersicht.php" class="btn btn-primary me-2" role="button" aria-pressed="true">User</a>
+                    <a href="reservierung_admin.php" class="btn btn-primary me-2" role="button" aria-pressed="true">Reservierungen</a>
                     <a href="admin.php" class="btn btn-primary me-2" role="button" aria-pressed="true">Admin</a>
                     <a href="logout.php" class="btn btn-primary " role="button" aria-pressed="true">Logout</a>
                 <?php elseif ($_SESSION["role"] === 2): ?>

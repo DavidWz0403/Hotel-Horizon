@@ -1,4 +1,10 @@
 <?php
+
+require_once("dbacess.php");
+$connection = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+$error_message = "";
+$success_message = "";
+
 function validatedata($data){
     $data = trim($data);
     $data = stripslashes($data);
@@ -15,12 +21,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $password2 = validatedata($_POST["password2"]);
     $anrede = validatedata($_POST["anrede"]);
 
-    if($password == $password2){
+    if($password != $password2){
+        $error_message = "Die eingegebenen Passwörter stimmen nicht überein.";
     }
-    else{
-        echo "Die eingegebenen Passwörter stimmen nicht überein.";
+
+    $insert = "INSERT INTO user (anrede, mail, vorname, nachname, username, passwort, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)";
+   
+   $stmt = $connection->prepare($insert);
+   $stmt->bind_param("sssssss", $uAnrede, $uMail, $uVorname, $uNachname,$uname, $passwd,$uStatus, );
+
+   $hashedPW = password_hash($password, PASSWORD_DEFAULT);
+
+   $uAnrede = $anrede;
+   $uMail = $mail;
+   $uVorname = $vorname;
+   $uNachname = $nachname;
+   $uname = $username;
+   $passwd = $hashedPW;
+   $uStatus = "active";
+
+   if ($stmt->execute()){
+        $success_message = "Registrierung erfolgreich, Sie können sich nun einloggen !";
+    }
+    else {
+        $error_message = "Registrierung fehlgeschlagen, bitte versuchen Sie es erneut";
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -79,6 +108,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="reset" class="btn btn-secondary">Reset</button>
                         </div>
+
+                        <?php if (!empty($error_message)): ?>
+                            <div class="alert alert-danger">
+                                <?php echo $error_message; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($success_message)): ?>
+                            <div class="alert alert-success">
+                                <?php echo $success_message; ?>
+                            </div>
+                        <?php endif; ?>
                     </form>
                 </div>
             </div>  

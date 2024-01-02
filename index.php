@@ -10,13 +10,13 @@
 </head>
 <body>
 <?php
+  
        include './header.php';
        ?>
     
   <div class="hero-section bg-image text-white d-flex align-items-center" style="background-image: url('./img/background.jpg');">
     <div class="container">
       <h1>Experience the Freedom</h1>
-      <!-- Add more content here if needed -->
     </div>
   </div>
     

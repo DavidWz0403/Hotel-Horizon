@@ -19,6 +19,33 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+if (!isset($_SESSION['role']) || $_SESSION["role"] !== 1) {
+    header('Location: login.php');
+    exit();
+}
+
+$userId = $_GET['id'] ?? null;
+$user = null;
+$error_message = '';
+$success_message = '';
+
+// Laden Sie die Benutzerdaten, wenn die Seite zum ersten Mal geladen wird
+if ($userId) {
+    $stmt = $connection->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+        $originalUsername = $user["username"] ?? '';
+    } else {
+        $error_message = "Benutzer nicht gefunden.";
+    }
+    $stmt->close();
+}
+
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $anrede = validatedata($_POST["anrede"]);
     $username = validatedata($_POST["username"]);
@@ -26,27 +53,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $vorname = validatedata($_POST["vorname"]);
     $nachname = validatedata($_POST["nachname"]);
     $password = validatedata($_POST["password"]);
+    $status = validatedata($_POST["status"]);
 
-    if(password_verify($password, $_SESSION["Passwort"])){
-        $update = "UPDATE user SET anrede=?, mail=?, vorname=?, nachname=?, username=? WHERE username=?";
-        $stmt = $connection->prepare($update);
-        $originalUsername = $_SESSION["Benutzer"];
-        $stmt->bind_param("ssssss", $anrede, $mail, $vorname, $nachname, $username, $originalUsername);
-        
-        if($stmt->execute()){
-            $success_message = "Die Änderungen wurden erfolgreich durchgeführt.";
-            $_SESSION["Benutzer"] = $username;
-            $_SESSION["uMail"] = $mail;
-            $_SESSION["uVorname"] = $vorname;
-            $_SESSION["uNachname"] = $nachname;
-        } else {
-            $error_message = "Fehler bei der Aktualisierung der Daten.";
-        }
+    
+    
+    $passwordChange = '';
+    if (!empty($password)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $passwordChange = ", passwort=?";
     }
-    else{
-        $error_message = "Das Passwort ist nicht korrekt.";
+
+    $updateQuery = "UPDATE user SET anrede=?, mail=?, vorname=?, nachname=?, username=?, status=? {$passwordChange} WHERE id=?";
+    $stmt = $connection->prepare($updateQuery);
+
+    // Binden Sie Parameter basierend darauf, ob das Passwort aktualisiert werden soll oder nicht
+    if (!empty($password)) {
+        $stmt->bind_param("sssssssi", $anrede, $mail, $vorname, $nachname, $username, $status, $hashedPassword, $userId);
+    } else {
+        $stmt->bind_param("ssssssi", $anrede, $mail, $vorname, $nachname, $username, $status, $userId);
     }
+    
+    if ($stmt->execute()) {
+        $success_message = "Die Änderungen wurden erfolgreich durchgeführt.";
+        header('Location: user_admin_übersicht.php');
+    } else {
+        $error_message = "Fehler bei der Aktualisierung der Daten: " . $connection->error;
+    }
+    $stmt->close();
 }
+   
 
 ?>
 
@@ -72,46 +107,51 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card p-4 shadow">
-                    <h1 class="text-center mb-4">Ihr Profil</h1>
-                    <p class="text-center">Um ihre Daten zu ändern, bitte die neuen Daten eingeben und auf Speichern drücken. Aus Sicherheitsgründen muss dies mit der Eingabe des Passwortes bestätigt werden.</p>
-                    <form action="profil.php" method="post">
+                    <h1 class="text-center mb-4">Profil Bearbeitung <?php echo $originalUsername ?> </h1>
+                    <form action="user_admin_edit.php?id=<?php echo $userId; ?>" method="post">
                         <div class="mb-3">  
                             <label for="anrede"  class="form-label">Geschlecht</label>
                             <select id="anrede" name="anrede" class="form-control" required>
                                 <option>männlich</option>
                                 <option>weiblich</option>
                                 <option>divers</option>
-                                </select>
-                            </div>
+                            </select>
+                        </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Email-Adresse</label>
-                                <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" value=<?php echo $_SESSION["uMail"]?> required>
+                                <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" value=<?php echo isset($user["mail"]) ? htmlspecialchars($user["mail"]) : ''; ?> required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Vorname</label>
-                                <input type="text" class="form-control" id="vorname"  name="vorname" placeholder="Vorname" value=<?php echo $_SESSION["uVorname"]?> required>
+                                <input type="text" class="form-control" id="vorname" name="vorname" placeholder="Vorname" value="<?php echo isset($user["vorname"]) ? htmlspecialchars($user["vorname"]) : ''; ?>" required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Nachname</label>
-                                <input type="text" class="form-control" id="nachname" name="nachname" placeholder="Nachname" value=<?php echo $_SESSION["uNachname"]?> required>
+                                <input type="text" class="form-control" id="nachname" name="nachname" placeholder="Nachname" value=<?php echo isset($user["nachname"]) ? htmlspecialchars($user["nachname"]) : ''; ?> required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Benutzername</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Benutzername" value=<?php echo $_SESSION["Benutzer"]?> required>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Benutzername" value=<?php echo isset($user["username"]) ? htmlspecialchars($user["username"]) : ''; ?> required>
                             </div>
                         <div class="mb-3">  
                                 <label for="mail" class="form-label">Passwort</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Passwort" required>
-                            </div>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Passwort" >
+                        </div>
+
                         <div class="mb-3">  
-                                <label for="mail" class="form-label">Passwort wiederholen</label>
-                                <input type="password" class="form-control" id="password2" name="password2" placeholder="Passwort wiederholen" required>
+                            <label for="status"  class="form-label">Status</label>
+                            <select id="status" name="status" class="form-control" required>
+                            <option value="active" <?php echo (isset($user["status"]) && $user["status"] == 'active') ? 'selected' : ''; ?>>active</option>
+                            <option value="inactive" <?php echo (isset($user["status"]) && $user["status"] == 'inactive') ? 'selected' : ''; ?>>inactive</option>
+                            </select>
                         </div>
 
                         <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Daten ändern</button>
                                 <button type="reset" class="btn btn-secondary">Änderungen verwerfen</button>
                         </div>
+
+                        
 
                         <?php if (!empty($error_message)): ?>
                             <div class="alert alert-danger">
