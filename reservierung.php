@@ -28,7 +28,7 @@
         $parkplatz = $_POST["parkplatz"];
         $haustier = $_POST["haustier"];
         $dates = $end - $start;
-        $price = $dates * 100 + $breakfast * 10*$dates + $parkplatz*10*$dates + $haustier * 20;
+        $price = ;
     }
     ?>
     <h1>Reservierungen</h1>
